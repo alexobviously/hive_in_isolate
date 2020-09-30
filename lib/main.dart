@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'manager.dart';
+import 'hive_isolate.dart';
 import 'package:hive/hive.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
@@ -51,10 +53,18 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           FloatingActionButton(
             onPressed: () async{
-              String p = Directory.current.path;
-              print(p);
-              Hive.init('${p}db');
-              Box db = await Hive.openBox('test');
+              copyDatabase();
+            },
+            tooltip: "Copy DB",
+            child: Icon(Icons.content_copy),
+          ),
+          FloatingActionButton(
+            onPressed: () async{
+              //String p = Directory.current.path;
+              //print(p);
+              //Hive.init('${p}db');
+              //Box db = await Hive.openBox('test');
+              Box db = await openBoxFromAsset('test', 'assets/test.hive');
               print(db.get(0));
             },
             tooltip: 'Test',
